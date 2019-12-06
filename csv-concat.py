@@ -38,10 +38,16 @@ def csvConcat(folder,output_path):
         MASTER_DF = pd.concat([MASTER_DF,temp_df])
 
     print('STEP 3 CREATING OUTPUT FILES')
-    MASTER_DF.to_excel("{}\\output_all.xlsx".format(output_path), index=None)
-    # dropping duplicate values
-    MASTER_DF_2 = MASTER_DF.drop_duplicates(subset=['Name'], keep='first')
-    MASTER_DF_2.to_excel("{}\\output_removed_dups.xlsx".format(output_path), index=None)
+
+    out_path1 = output_path + '\\output_all.xlsx'
+    writer1 = pd.ExcelWriter(out_path1 , engine='xlsxwriter')
+    MASTER_DF.to_excel(writer1, sheet_name='Sheet1')
+    writer1.save()
+    
+    out_path2 = output_path + '\\output_removed_dups.xlsx'
+    writer2 = pd.ExcelWriter(out_path2 , engine='xlsxwriter')
+    MASTER_DF.to_excel(writer2, sheet_name='Sheet1')
+    writer2.save()
 
     return print('FINISHED PLEASE CHECK OUTPUT FOLDER: {}'.format(output_path))
 
